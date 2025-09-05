@@ -1,0 +1,75 @@
+{% extends "predict_base.html" %}
+{% block content %}
+
+<h2 style="color:#fc4e03;font-family:Times New Roman;font-size:60">Upload your ECG Wave Form and Facial Images</h2>
+
+<div>
+    <form id="upload-file" method="post" enctype="multipart/form-data">
+        <div style="display: flex; justify-content: space-around;">
+            <div>
+                <center>
+                    <label for="imageUpload1" class="upload-label">
+                        Upload Face
+                    </label>
+                    <input type="file" name="file1" id="imageUpload1" accept=".png, .jpg, .jpeg">
+                </center>
+                <div class="image-section" id="imageSection1" style="display:none;">
+                    <div class="img-preview" style="width: 200px; height: 200px;">
+                        <div id="imagePreview1" style="width: 100%; height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <center>
+                    <label for="imageUpload2" class="upload-label">
+                        Upload ECG
+                    </label>
+                    <input type="file" name="file2" id="imageUpload2" accept=".png, .jpg, .jpeg">
+                </center>
+                <div class="image-section" id="imageSection2" style="display:none;">
+                    <div class="img-preview" style="width: 200px; height: 200px;">
+                        <div id="imagePreview2" style="width: 100%; height: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div style="margin-top: 20px; text-align: center;">
+        <button type="button" class="btn btn-primary btn-lg" id="btn-predict">Predict!</button>
+    </div>
+
+    <div class="loader" style="display:none;"></div>
+
+    <h3 style="color:black" id="result">
+        <span> </span>
+    </h3>
+</div>
+
+<style>
+    .img-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+<script>
+    document.getElementById('imageUpload1').addEventListener('change', function() {
+        previewImage(this, 'imagePreview1', 'imageSection1');
+    });
+    document.getElementById('imageUpload2').addEventListener('change', function() {
+        previewImage(this, 'imagePreview2', 'imageSection2');
+    });
+    function previewImage(input, previewId, sectionId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(previewId).innerHTML = '<img src="' + e.target.result + '" alt="Image Preview">';
+                document.getElementById(sectionId).style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock %}
